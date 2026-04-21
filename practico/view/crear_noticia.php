@@ -19,7 +19,7 @@
 </head>
 <body class="bg-light">
 
-  <?php include("../header.php"); ?>
+  <?php include("../includes/header.php"); ?>
 
   <?php 
     if (!empty($_SESSION["error"])) {
@@ -49,7 +49,7 @@
 
           <!-- Body -->
           <div class="card-body p-4">
-            <form action="../database/control-noticia.php" method="POST" enctype="multipart/form-data">
+            <form action="../cotrollers/control-noticia.php" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="id_usuario" value="<?php echo $id_usuario; ?>">
 
               <div class="mb-3">
@@ -79,7 +79,7 @@
       </div>
     </div>
   </div>
-  <?php include("../footer.php"); ?>
+  <?php include("../includes/footer.php"); ?>
 
 </body>
 </html>

@@ -1,7 +1,6 @@
-
 <?php
 session_start();
-include(__DIR__ . "/../database/conexion.php");
+include(__DIR__ . "/../config/conexion.php");
 if (!isset($_GET['id_album']) || !is_numeric($_GET['id_album'])) {
     $_SESSION['error'] = "Álbum no válido.";
     header("Location: ../index.php");

@@ -96,14 +96,14 @@ if ($id_usuario != 0) {
 
         <li class="nav-item">
             <a class="nav-link text-white"
-               href="'. $BASE_URL . 'pages/crear_noticia.php">
+               href="'. $BASE_URL . 'view/crear_noticia.php">
                Crear Noticia
             </a>
         </li>
 
         <li class="nav-item">
             <a class="nav-link text-white"
-               href="'. $BASE_URL . 'pages/listar_noticias.php">
+               href="'. $BASE_URL . 'view/listar_noticias.php">
                Mis Noticias
             </a>
         </li>
@@ -120,7 +120,7 @@ if ($id_usuario != 0) {
 
         <li class="nav-item">
             <a class="nav-link text-white"
-               href="'. $BASE_URL . 'pages/validar_noticia.php">
+               href="'. $BASE_URL . 'view/validar_noticia.php">
                Validar Noticias
             </a>
         </li>
@@ -135,7 +135,7 @@ if ($id_usuario != 0) {
 
     <li class="nav-item">
         <a class="nav-link text-white"
-           href="'. $BASE_URL . 'pages/logout.php">
+           href="'. $BASE_URL . 'controllers/logout.php">
            Cerrar Sesión
         </a>
     </li>
@@ -151,14 +151,14 @@ else {
 
 <li class="nav-item">
     <a class="nav-link text-white"
-       href="' . $BASE_URL . 'pages/login.php">
+       href="' . $BASE_URL . 'view/login.php">
        Iniciar Sesión
     </a>
 </li>
 
 <li class="nav-item">
     <a class="nav-link text-white"
-       href="' . $BASE_URL . 'pages/registro.php">
+       href="' . $BASE_URL . 'view/registro.php">
        Registrarse
     </a>
 </li>

@@ -2,7 +2,7 @@
 
 session_start();
 
-include(__DIR__ . "/conexion.php");
+include(__DIR__ . "../config/conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 

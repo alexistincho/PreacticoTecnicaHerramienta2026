@@ -13,7 +13,7 @@
 <body>
 <?php
 
-    include("../header.php");
+    include("../includes/header.php");
     if (session_status() == PHP_SESSION_NONE) {
           session_start();
     }
@@ -34,7 +34,7 @@
             <?php if(!empty($error)): ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
             <?php endif; ?>
-            <form action="../database/validar-login.php" method="post">
+            <form action="../controllers/validar-login.php" method="post">
                 <div class="mb-3">
                     <label class="form-label">Email</label>
                     <input type="email" class="form-control" name="email" placeholder="Ingrese email" required>
@@ -51,6 +51,6 @@
             </div>
         </div>
         </div>
-    <?php include("../footer.php"); ?>
+    <?php include("../includes/footer.php"); ?>
 </body>
 </html>

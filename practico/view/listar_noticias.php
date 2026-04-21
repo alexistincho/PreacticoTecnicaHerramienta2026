@@ -6,13 +6,13 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="../css/styleHistorial.css" rel="stylesheet">
+    <!-- <link href="../css/styleHistorial.css" rel="stylesheet"> -->
 </head>
 
 <body class="bg-light">
 
 <?php
-include("../header.php");
+include("../includes/header.php");
 
 /* Verificar sesión */
 
@@ -92,6 +92,6 @@ if (!empty($_SESSION["mensaje"])) {
 
 
 </tbody></table></div>
-<?php include("../footer.php"); ?>
+<?php include("../includes/footer.php"); ?>
 </body>
 </html>
