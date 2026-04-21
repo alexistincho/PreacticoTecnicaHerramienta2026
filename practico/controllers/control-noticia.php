@@ -2,7 +2,7 @@
 
 session_start();
 
-include(__DIR__ . "../config/conexion.php");
+include(__DIR__ . "/../config/conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -14,29 +14,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $imagen_nombre = null;
 
-    if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === 0) {
+if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === 0) {
 
-        $carpetaDestino =
-        __DIR__ . "../Assets/";
-
-        /* Crear carpeta si no existe */
-
-        if (!is_dir($carpetaDestino)) { mkdir($carpetaDestino, 0777, true);}
-
-        $nombreArchivo =time() . "_" .basename($_FILES["imagen"]["name"]);
-
-        $rutaArchivo =$carpetaDestino . $nombreArchivo;
-
-        move_uploaded_file($_FILES["imagen"]["tmp_name"],$rutaArchivo);
-
-        $imagen_nombre = $nombreArchivo;
+    /* Validar tamaño */
+    if ($_FILES["imagen"]["size"] > 2097152) {
+        $_SESSION["error"] = "La imagen supera los 2MB";
+        header("Location: ../index.php");
+        exit;
     }
+
+    /* Validar tipo */
+
+    $tipo = mime_content_type($_FILES["imagen"]["tmp_name"]);
+
+    if ($tipo != "image/jpeg" && $tipo != "image/png") {
+        $_SESSION["error"] = "Solo se permiten imágenes JPG o PNG";
+        header("Location: ../index.php");
+        exit;
+    }
+
+    $carpetaDestino = __DIR__ . "/../Assets/imagenes/";
+
+    if (!is_dir($carpetaDestino)) {mkdir($carpetaDestino, 0777, true);}
+
+    $nombreArchivo =time() . "_" .basename($_FILES["imagen"]["name"]);
+
+    $rutaArchivo =$carpetaDestino . $nombreArchivo;
+
+    if (!move_uploaded_file($_FILES["imagen"]["tmp_name"],$rutaArchivo)) {
+        $_SESSION["error"] ="Error al subir la imagen";
+        header("Location: ../index.php");
+        exit;
+    }
+
+    $imagen_nombre = $nombreArchivo;
+}
 
     /*=========================INSERTAR NOTICIA=========================*/
 
-    $sql = "
-
-    INSERT INTO noticias (titulo,descripcion,imagen,id_autor) VALUES (?,?,?,?)";
+    $sql = "INSERT INTO noticias (titulo,descripcion,imagen,id_autor) VALUES (?,?,?,?)";
 
     $stmt = $conexion->prepare($sql);
 
