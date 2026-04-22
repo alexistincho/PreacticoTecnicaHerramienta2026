@@ -49,7 +49,7 @@
 
           <!-- Body -->
           <div class="card-body p-4">
-            <form action="../cotrollers/control-noticia.php" method="POST" enctype="multipart/form-data">
+            <form action="../controllers/control-noticia.php" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="id_usuario" value="<?php echo $id_usuario; ?>">
 
               <div class="mb-3">

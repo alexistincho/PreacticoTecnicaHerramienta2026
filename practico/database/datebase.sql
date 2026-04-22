@@ -50,6 +50,8 @@ CREATE TABLE parametros (
     dias_expiracion INT(11) NOT NULL
 );
 
+/*modificacion para la tabla parametros*/
+ALTER TABLE parametros ADD COLUMN tamanio_imagen INT(11) NOT NULL DEFAULT 2;
 
 /* ----------consulta solo para rol --------------*/
 

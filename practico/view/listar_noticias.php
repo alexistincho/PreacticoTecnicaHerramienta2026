@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mis Noticias</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- <link href="../css/styleHistorial.css" rel="stylesheet"> -->
 </head>
 
 <body class="bg-light">
@@ -14,78 +11,108 @@
 <?php
 include("../includes/header.php");
 
-/* Verificar sesión */
-
-if (!isset($_SESSION["id_usuario"])) {header("Location: login.php");exit;}
+if (!isset($_SESSION["id_usuario"])) {
+    header("Location: login.php");
+    exit;
+}
 
 $id_usuario = $_SESSION["id_usuario"];
 
-/* Obtener noticias del usuario */
-
 $sql = "SELECT * FROM noticias WHERE id_autor = ? ORDER BY fecha_creacion DESC";
-
 $stmt = $conexion->prepare($sql);
-
 $stmt->bind_param("i", $id_usuario);
-
 $stmt->execute();
-
 $resultado = $stmt->get_result();
 ?>
 
 <div class="container mt-5">
-
-<h2 class="mb-4 text-center">
-Mis Noticias
-</h2>
+<h2 class="mb-4 text-center">Mis Noticias</h2>
 
 <?php
 if (!empty($_SESSION["mensaje"])) {
-    echo '
-    <div class="alert alert-success text-center">' . $_SESSION["mensaje"] . '</div>';
+    echo '<div class="alert alert-success text-center">' . $_SESSION["mensaje"] . '</div>';
     unset($_SESSION["mensaje"]);
 }
+if (!empty($_SESSION["error"])) {
+    echo '<div class="alert alert-danger text-center">' . $_SESSION["error"] . '</div>';
+    unset($_SESSION["error"]);
+}
 ?>
+
 <table class="table table-bordered table-striped text-center">
 <thead class="table-dark">
-    <tr> <th>Título</th> <th>Imagen</th> <th>Estado</th> <th>Fecha</th> <th>Acciones</th></tr>
+    <tr>
+        <th>Título</th>
+        <th>Imagen</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+    </tr>
 </thead>
 <tbody>
+
 <?php
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo '<tr>
-                <td>' . $fila["titulo"] . '</td>
-                <td>';
+if ($resultado->num_rows > 0) {
+    while ($fila = $resultado->fetch_assoc()) {
 
-            if ($fila["imagen"] != null) {
-                echo '<img src="../Assets/imagenes/' . $fila["imagen"] . '" width="80" class="img-thumbnail">';
-            }
+        echo '<tr>
+            <td>' . $fila["titulo"] . '</td>
+            <td>';
 
-            echo '</td>
-                <td><span class="badge bg-primary">' . $fila["estado"] . '</span></td>
-                <td>' . $fila["fecha_creacion"] . '</td>
-                <td>';
-
-            echo '<a href="editar_noticia.php?id=' . $fila["id_noticia"] . '" class="btn btn-warning btn-sm">Editar</a> ';
-
-            if ($fila["estado"] == "Borrador") {
-                echo '<a href="../controllers/anular_noticia.php?id=' . $fila["id_noticia"] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'¿Anular noticia?\')">Anular</a> ';
-            }
-
-            echo '<a href="listar_noticias.php?id_historial=' . $fila["id_noticia"] . '" class="btn btn-secondary btn-sm">Historial</a>';
-
-            echo '</td></tr>';
+        if ($fila["imagen"] != null) {
+            echo '<img src="../Assets/imagenes/' . $fila["imagen"] . '" width="80" class="img-thumbnail">';
         }
-    } else {
-        echo '<tr><td colspan="5">No tienes noticias creadas</td></tr>';
+
+        echo '</td>
+            <td><span class="badge bg-primary">' . $fila["estado"] . '</span></td>
+            <td>' . $fila["fecha_creacion"] . '</td>
+            <td>';
+
+        /*=========================BOTONES SEGÚN ESTADO=========================*/
+
+        if ($fila["estado"] == "Borrador") {
+
+            echo '<a href="../controllers/enviar-validacion.php?id=' . $fila["id_noticia"] . '" 
+                  class="btn btn-primary btn-sm" 
+                  onclick="return confirm(\'¿Enviar a validación?\')">Enviar a Validación</a> ';
+
+            echo '<a href="../controllers/anular-noticia.php?id=' . $fila["id_noticia"] . '" 
+                  class="btn btn-danger btn-sm" 
+                  onclick="return confirm(\'¿Anular noticia?\')">Anular</a> ';
+
+        } elseif ($fila["estado"] == "Para Corrección") {
+
+            echo '<a href="editar_noticia.php?id=' . $fila["id_noticia"] . '" 
+                  class="btn btn-warning btn-sm">Corregir</a> ';
+
+            echo '<a href="../controllers/enviar-validacion-correccion.php?id=' . $fila["id_noticia"] . '" 
+                  class="btn btn-primary btn-sm" 
+                  onclick="return confirm(\'¿Enviar a validación?\')">Enviar a Validación</a> ';
+
+            echo '<a href="../controllers/anular-noticia.php?id=' . $fila["id_noticia"] . '" 
+                  class="btn btn-danger btn-sm" 
+                  onclick="return confirm(\'¿Anular noticia?\')">Anular</a> ';
+
+        }
+
+        /*=========================HISTORIAL SIEMPRE VISIBLE=========================*/
+
+        echo '<a href="listar_noticias.php?id_historial=' . $fila["id_noticia"] . '" 
+              class="btn btn-secondary btn-sm">Historial</a>';
+
+        echo '</td></tr>';
     }
+} else {
+    echo '<tr><td colspan="5">No tienes noticias creadas</td></tr>';
+}
 ?>
 
-    <?php include("historial.php");?>
+<?php include("historial.php"); ?>
 
+</tbody>
+</table>
+</div>
 
-</tbody></table></div>
 <?php include("../includes/footer.php"); ?>
 </body>
 </html>

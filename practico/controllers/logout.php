@@ -26,6 +26,6 @@
     $_SESSION['despedida'] = 'Sesión cerrada correctamente.';
 
     // Redirigir
-    header("Location: ../pages/login.php");
+    header("Location: ../index.php");
     exit();
 ?>

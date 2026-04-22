@@ -14,7 +14,7 @@ if (!isset($_SESSION["id_usuario"])) {
 $id_noticia = $_GET["id"];
 $id_usuario = $_SESSION["id_usuario"];
 
-/*=========================VERIFICAR QUE LA NOTICIA ESTÉ EN BORRADOR Y SEA DEL USUARIO=========================*/
+/*=========================VERIFICAR QUE LA NOTICIA SEA DEL USUARIO=========================*/
 
 $sql_check = "SELECT estado FROM noticias WHERE id_noticia = ? AND id_autor = ?";
 
@@ -24,13 +24,15 @@ $stmt_check->execute();
 $resultado = $stmt_check->get_result();
 $noticia = $resultado->fetch_assoc();
 
-if (!$noticia || $noticia["estado"] != "Borrador") {
+if (!$noticia || !in_array($noticia["estado"], ["Borrador", "Para Corrección"])) {
     $_SESSION["error"] = "No podés anular esta noticia";
     header("Location: ../view/listar_noticias.php");
     exit;
 }
 
 /*=========================ACTUALIZAR ESTADO A ANULADA=========================*/
+
+$estado_anterior = $noticia["estado"];
 
 $sql_update = "UPDATE noticias SET estado = 'Anulada' WHERE id_noticia = ?";
 
@@ -41,10 +43,10 @@ $stmt_update->execute();
 /*=========================REGISTRAR HISTORIAL=========================*/
 
 $sql_historial = "INSERT INTO historial (id_noticia, id_usuario, estado_anterior, estado_nuevo) 
-                  VALUES (?, ?, 'Borrador', 'Anulada')";
+                  VALUES (?, ?, ?, 'Anulada')";
 
 $stmt_historial = $conexion->prepare($sql_historial);
-$stmt_historial->bind_param("ii", $id_noticia, $id_usuario);
+$stmt_historial->bind_param("iis", $id_noticia, $id_usuario, $estado_anterior);
 $stmt_historial->execute();
 
 /*=========================REDIRECCIÓN=========================*/

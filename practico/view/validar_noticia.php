@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Validar Noticias</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -13,42 +12,46 @@
 
 include("../includes/header.php");
 
-/* Verificar sesión */
+/*=========================VERIFICAR SESIÓN=========================*/
 
 if (!isset($_SESSION["id_usuario"])) {
     header("Location: login.php");
     exit;
 }
 
-/* Verificar rol validador/editor/admin */
+/*=========================VERIFICAR ROL VALIDADOR=========================*/
 
 if (!$es_validador) {
     header("Location: ../index.php");
     exit;
 }
 
-/* Obtener noticias en borrador */
+/*=========================OBTENER NOTICIAS LISTAS PARA VALIDAR=========================*/
 
-$sql = "SELECT n.*, u.nombre FROM noticias n JOIN usuarios u ON n.id_autor = u.id_usuario 
-WHERE n.estado = 'Borrador'
-ORDER BY n.fecha_creacion DESC ";
+$sql = "SELECT n.*, u.nombre FROM noticias n 
+        JOIN usuarios u ON n.id_autor = u.id_usuario 
+        WHERE n.estado = 'Lista para Validación'
+        ORDER BY n.fecha_creacion DESC";
 
 $stmt = $conexion->prepare($sql);
 $stmt->execute();
 $resultado = $stmt->get_result();
 ?>
 
-<div class="container mt-5"> <h2 class="mb-4 text-center"> Noticias para su públicación</h2>
+<div class="container mt-5">
+<h2 class="mb-4 text-center">Noticias para Validar</h2>
 
 <?php
 if (!empty($_SESSION["mensaje"])) {
-    echo '
-    <div class="alert alert-success text-center">
-    ' . $_SESSION["mensaje"] . '
-    </div>';
+    echo '<div class="alert alert-success text-center">' . $_SESSION["mensaje"] . '</div>';
     unset($_SESSION["mensaje"]);
 }
+if (!empty($_SESSION["error"])) {
+    echo '<div class="alert alert-danger text-center">' . $_SESSION["error"] . '</div>';
+    unset($_SESSION["error"]);
+}
 ?>
+
 <table class="table table-bordered table-striped text-center">
 <thead class="table-dark">
 <tr>
@@ -59,7 +62,6 @@ if (!empty($_SESSION["mensaje"])) {
     <th>Acciones</th>
 </tr>
 </thead>
-
 <tbody>
 
 <?php
@@ -68,56 +70,43 @@ if ($resultado->num_rows > 0) {
 
     while ($fila = $resultado->fetch_assoc()) {
 
-        echo '
-        <tr>
-        <td>' . $fila["titulo"] . '</td>
-        <td>' . $fila["nombre"] . '</td>
-        <td>';
+        echo '<tr>
+            <td>' . $fila["titulo"] . '</td>
+            <td>' . $fila["nombre"] . '</td>
+            <td>';
 
         if ($fila["imagen"] != null) {
-            echo '<img src="../imagenes/' . $fila["imagen"] . '" width="80" class="img-thumbnail">';
+            echo '<img src="../Assets/imagenes/' . $fila["imagen"] . '" width="80" class="img-thumbnail">';
         }
 
-        echo '
-        </td>
-        <td>' . $fila["fecha_creacion"] . '</td>
-        <td>
-        <a href="../database/validar_noticia.php?id=' . $fila["id_noticia"] . '" 
-        class="btn btn-success btn-sm">
-        Validar
-        </a>
-        <a  <a href="validar_noticia.php?id_historial=' . $fila["id_noticia"] . '" 
-        class="btn btn-secondary btn-sm">
-        Historial
-        </a>
-        </td>
-        </tr>';
+        echo '</td>
+            <td>' . $fila["fecha_creacion"] . '</td>
+            <td>';
+
+        echo '<a href="../controllers/publicar-noticia.php?id=' . $fila["id_noticia"] . '" 
+              class="btn btn-success btn-sm">Publicar</a> ';
+
+        echo '<a href="../controllers/correccion-noticia.php?id=' . $fila["id_noticia"] . '" 
+              class="btn btn-warning btn-sm" 
+              onclick="return confirm(\'¿Enviar a corrección?\')">Para Corrección</a> ';
+
+        echo '<a href="validar_noticia.php?id_historial=' . $fila["id_noticia"] . '" 
+              class="btn btn-secondary btn-sm">Historial</a>';
+
+        echo '</td></tr>';
     }
 
-}
-else {
-
-    echo '
-
-    <tr>
-        <td colspan="5">
-        No hay noticias en borrador
-        </td>
-    </tr>';
-
+} else {
+    echo '<tr><td colspan="5">No hay noticias para validar</td></tr>';
 }
 
 ?>
 
 </tbody>
-
 </table>
-
 </div>
 
-    
 <?php include("historial.php"); ?>
-
 <?php include("../includes/footer.php"); ?>
 
 </body>
