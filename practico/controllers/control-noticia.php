@@ -48,6 +48,7 @@ if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === 0) {
     }
 
     $imagen_nombre = $nombreArchivo;
+    
 }
 
     /*=========================INSERTAR NOTICIA=========================*/
@@ -81,4 +82,24 @@ if (isset($_FILES["imagen"]) && $_FILES["imagen"]["error"] === 0) {
     exit;
 
 }
+
+
+/*=========================VERIFICAR TÍTULO DUPLICADO=========================*/
+
+$sql_check = "SELECT id_noticia FROM noticias 
+              WHERE titulo = ? 
+              AND estado NOT IN ('Expirada', 'Anulada')";
+
+$stmt_check = $conexion->prepare($sql_check);
+$stmt_check->bind_param("s", $titulo);
+$stmt_check->execute();
+$stmt_check->store_result();
+
+if ($stmt_check->num_rows > 0) {
+    $_SESSION["error"] = "Ya existe una noticia con ese título";
+    header("Location: ../view/crear_noticia.php");
+    exit;
+}
+
+$stmt_check->close();
 ?>

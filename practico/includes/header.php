@@ -7,7 +7,7 @@
 </style>
 
 <?php
-$BASE_URL = "http://localhost/practicoHerramienta2026/practico/";
+$BASE_URL = "http://localhost/PreacticoTecnicaHerramienta2026/practico/";
 
 /* Iniciar sesión si no está iniciada */
 if (session_status() == PHP_SESSION_NONE) {
@@ -15,7 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 /* Incluir conexión a la base de datos */
-include(__DIR__ . "/database/conexion.php");
+include(__DIR__ . "/../config/conexion.php");
 
 /* Verificar si el usuario está logueado */
 if (isset($_SESSION["id_usuario"])) {

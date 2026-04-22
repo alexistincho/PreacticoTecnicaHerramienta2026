@@ -53,39 +53,33 @@ if (!empty($_SESSION["mensaje"])) {
 <tbody>
 <?php
     if ($resultado->num_rows > 0) {
-    while ($fila = $resultado->fetch_assoc()) {
-        echo '
-        <tr>
-        
-        <td>' . $fila["titulo"] . '</td>
-        <td>';
-        if ($fila["imagen"] != null) {
+        while ($fila = $resultado->fetch_assoc()) {
+            echo '<tr>
+                <td>' . $fila["titulo"] . '</td>
+                <td>';
 
-            echo '<img src="../Assets/' . $fila["imagen"] . '" width="80" class=" img-thumbnail">';
+            if ($fila["imagen"] != null) {
+                echo '<img src="../Assets/imagenes/' . $fila["imagen"] . '" width="80" class="img-thumbnail">';
+            }
+
+            echo '</td>
+                <td><span class="badge bg-primary">' . $fila["estado"] . '</span></td>
+                <td>' . $fila["fecha_creacion"] . '</td>
+                <td>';
+
+            echo '<a href="editar_noticia.php?id=' . $fila["id_noticia"] . '" class="btn btn-warning btn-sm">Editar</a> ';
+
+            if ($fila["estado"] == "Borrador") {
+                echo '<a href="../controllers/anular_noticia.php?id=' . $fila["id_noticia"] . '" class="btn btn-danger btn-sm" onclick="return confirm(\'¿Anular noticia?\')">Anular</a> ';
+            }
+
+            echo '<a href="listar_noticias.php?id_historial=' . $fila["id_noticia"] . '" class="btn btn-secondary btn-sm">Historial</a>';
+
+            echo '</td></tr>';
         }
-        echo '  </td> <td> <span class="badge bg-primary"> ' . $fila["estado"] . ' </span> </td>
-
-        <td> ' . $fila["fecha_creacion"] . ' </td> <td>
-
-        <a href="editar_noticia.php?id=' . $fila["id_noticia"] . '" class="btn btn-warning btn-sm"> Editar </a>
-
-        <a href="../database/eliminar_noticia.php?id=' . $fila["id_noticia"] . '"class="btn btn-danger btn-sm"onclick="return confirm(\'¿Eliminar noticia?\')">
-        Eliminar</a>';
-
-        /*BOTÓN ENVIAR A VALIDACIÓNSOLO SI ESTÁ EN BORRADOR*/
-
-        
-        echo' <a href="listar_noticias.php?id_historial=' . $fila["id_noticia"] . '" class="btn btn-secondary btn-sm btn-historial"> 
-            Historial</a>
-        </td></tr>';
+    } else {
+        echo '<tr><td colspan="5">No tienes noticias creadas</td></tr>';
     }
-
-    }else {
-        echo ' <tr> <td colspan="6"> No tienes noticias creadas </td> </tr>';
-    }
-
-
-
 ?>
 
     <?php include("historial.php");?>

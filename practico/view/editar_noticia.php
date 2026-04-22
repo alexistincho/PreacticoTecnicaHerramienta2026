@@ -129,7 +129,7 @@ Imagen actual
 <?php
 if ($noticia["imagen"] != null) {
 
-    echo '<img src="../Assets/' .
+    echo '<img src="../Assets/imagenes/' .
     $noticia["imagen"] .
     '" width="120" class="img-thumbnail">';
 }

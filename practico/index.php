@@ -21,13 +21,13 @@
 </style>
 
 <body>
-    <?php $BASE_URL = "http://localhost/noticias/"; include_once("header.php");?>
+    <?php $BASE_URL = "http://localhost/noticias/"; include_once("includes/header.php");?>
   
 
-<h1>noticiones
+<h1>noticiones para todes
     
 </h1>
 
-    <?php include_once("footer.php");?>
+    <?php include_once("includes/footer.php");?>
 </body>
 </html>
