@@ -73,7 +73,7 @@
           <!-- Footer opcional -->
           <div class="card-footer text-center text-muted small">
             Recuerda: un titulo puede contener entre <b>10 a 100 caracteres</b>. <br>
-            Recuerda: la descripción debe de tener <b>almenos 50 caracteres</b>.
+            Recuerda: la descripción debe de tener <b>al menos 50 caracteres</b>.
           </div>
         </div>
       </div>

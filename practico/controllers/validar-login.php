@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["error"] =
         "Por favor ingrese email y contraseña.";
 
-        header("Location: ../pages/login.php");
+        header("Location: ../view/login.php");
         exit();
 
     }
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["error"] =
                 "Contraseña incorrecta.";
 
-            header("Location: ../pages/login.php");
+            header("Location: ../view/login.php");
             exit();
 
         }
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["error"] =
         "No existe usuario con ese email.";
 
-        header("Location: ../pages/login.php");
+        header("Location: ../view/login.php");
         exit();
 
     }

@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['error'] =
         "Nombre, Email y Contraseña son obligatorios.";
 
-        header("Location: ../pages/registro.php");
+        header("Location: ../view/registro.php");
         exit;
 
     }
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['error'] =
         "Debe seleccionar al menos un rol.";
 
-        header("Location: ../pages/registro.php");
+        header("Location: ../view/registro.php");
         exit;
 
     }
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $stmt->close();
 
-        header("Location: ../pages/registro.php");
+        header("Location: ../view/registro.php");
         exit;
 
     }
@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "Registro exitoso. Ahora puede iniciar sesión.";
 
         header(
-            "Location: ../pages/login.php"
+            "Location: ../view/login.php"
         );
 
         exit;
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "Error al registrar usuario.";
 
         header(
-            "Location: ../pages/registro.php"
+            "Location: ../view/registro.php"
         );
 
         exit;
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
 
     header(
-        "Location: ../pages/registro.php"
+        "Location: ../view/registro.php"
     );
 
     exit;

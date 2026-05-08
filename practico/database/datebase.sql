@@ -6,7 +6,7 @@ CREATE TABLE usuarios (
     INDEX (email)
 );
 
-CREATE TABLE rol (
+CREATE TABLE roles (
     id_rol INT(11) AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
 );

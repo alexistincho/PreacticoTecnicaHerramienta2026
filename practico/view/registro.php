@@ -29,7 +29,7 @@
                 <?php if(!empty($error)): ?>
                 <div class="alert alert-danger"><?php echo $error; ?></div>
                 <?php endif; ?>
-                <form action="../cotrollers/validar-registro.php" method="post" enctype="multipart/form-data" novalidate>
+                <form action="../controllers/validar-registro.php" method="post" enctype="multipart/form-data" novalidate>
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
                         <input type="text" class="form-control" name="nombre" required >
