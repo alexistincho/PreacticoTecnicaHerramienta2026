@@ -34,7 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $sql_param = "SELECT tamanio_imagen FROM parametros LIMIT 1";
     $resultado_param = $conexion->query($sql_param);
     $parametro = $resultado_param->fetch_assoc();
-    $tamanio_maximo = $parametro["tamanio_imagen"] * 1048576; // MB a bytes
+
+    // VALIDACIÓN: Si existe el parámetro en la BD lo usamos, si no, asignamos 2 MB por defecto
+    if ($parametro && isset($parametro["tamanio_imagen"])) {
+        $megas = $parametro["tamanio_imagen"];
+    } else {
+        $megas = 2; // Valor de respaldo por seguridad
+    }
+
+    $tamanio_maximo = $megas * 1048576; // MB a bytes
 
     /*=========================SUBIR IMAGEN (SI EXISTE)=========================*/
 
@@ -95,8 +103,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $sql = "INSERT INTO noticias (titulo, descripcion, imagen, id_autor) VALUES (?, ?, ?, ?)";
 
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("sssi", $titulo, $descripcion, $imagen_nombre, $id_usuario);
-    $stmt->execute();
+    
+    // Si la imagen viene vacía o nula, nos aseguramos de pasar un NULL limpio o el string correspondiente
+    if ($imagen_nombre === null) {
+        $param_imagen = null;
+    } else {
+        $param_imagen = $imagen_nombre;
+    }
+
+    // Pasamos $param_imagen en lugar de la variable original para evitar conflictos de referencia en PHP
+    $stmt->bind_param("ssss", $titulo, $descripcion, $param_imagen, $id_usuario); 
+    
+    if (!$stmt->execute()) {
+        
+        $_SESSION["error"] = "Error en la base de datos: " . $stmt->error;
+        header("Location: ../view/crear_noticia.php");
+        exit;
+    }
 
     /*=========================OBTENER ID NOTICIA=========================*/
 
