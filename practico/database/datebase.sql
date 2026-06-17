@@ -16,7 +16,7 @@ CREATE TABLE usuario_roles (
     id_rol INT(11) NOT NULL,
     PRIMARY KEY (id_usuario, id_rol),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
-    FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
 );
 
 CREATE TABLE noticias (
@@ -55,6 +55,6 @@ ALTER TABLE parametros ADD COLUMN tamanio_imagen INT(11) NOT NULL DEFAULT 2;
 
 /* ----------consulta solo para rol --------------*/
 
-INSERT INTO rol (id_rol, nombre) VALUES
+INSERT INTO roles (id_rol, nombre) VALUES
 (1, 'editor'),
 (2, 'validador');
