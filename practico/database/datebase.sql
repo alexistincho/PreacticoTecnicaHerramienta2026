@@ -56,5 +56,9 @@ ALTER TABLE parametros ADD COLUMN tamanio_imagen INT(11) NOT NULL DEFAULT 2;
 /* ----------consulta solo para rol --------------*/
 
 INSERT INTO roles (id_rol, nombre) VALUES
-(1, 'editor'),
-(2, 'validador');
+(1, 'Editor'),
+(2, 'Validador');
+
+/* se necesita agregar parametros del inicio */
+INSERT INTO parametros (id_parametro, dias_expiracion, tamanio_imagen) 
+VALUES (1, 30, 2);
